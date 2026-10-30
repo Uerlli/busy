@@ -2,11 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useUI } from "@/context/UIContext";
 import { products } from "@/mocks/products";
+import { COLLECTION_META, VIRTUAL_COLLECTIONS } from "@/mocks/brand";
 
 const CATEGORY_LINKS = [
-  { label: "Camisas", to: "/camisas" },
-  { label: "Polos", to: "/polos" },
-  { label: "Novidades", to: "/novidades" },
+  ...COLLECTION_META.slice(0, 6).map((c) => ({ label: c.title, to: `/colecao/${c.slug}` })),
+  ...VIRTUAL_COLLECTIONS.filter((c) => c.slug !== "mais-vendidos").map((c) => ({
+    label: c.title,
+    to: `/colecao/${c.slug}`,
+  })),
 ];
 
 export default function SearchOverlay() {
@@ -33,7 +36,8 @@ export default function SearchOverlay() {
       (p) =>
         p.name.toLowerCase().includes(s) ||
         p.categoryLabel.toLowerCase().includes(s) ||
-        p.category.toLowerCase().includes(s) ||
+        p.type.toLowerCase().includes(s) ||
+        p.fabric.toLowerCase().includes(s) ||
         p.colors.some((c) => c.name.toLowerCase().includes(s))
     );
   }, [q]);
@@ -60,9 +64,9 @@ export default function SearchOverlay() {
           autoFocus
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Buscar peças, cores ou categorias"
+          placeholder="Buscar peças, tecidos, cores ou categorias"
           aria-label="Buscar"
-          className="flex-1 bg-transparent outline-none text-lg md:text-2xl font-display placeholder:text-foreground-400"
+          className="flex-1 bg-transparent outline-none text-base md:text-2xl font-display placeholder:text-foreground-400"
         />
         <button
           onClick={closeSearch}
@@ -74,44 +78,44 @@ export default function SearchOverlay() {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="shell py-10 md:py-14">
+        <div className="shell py-9 md:py-14">
           {!q.trim() && (
             <>
-              <p className="eyebrow mb-6">Categorias</p>
-              <div className="flex flex-wrap gap-3">
+              <p className="eyebrow mb-5">Categorias</p>
+              <div className="flex flex-wrap gap-2.5">
                 {CATEGORY_LINKS.map((c) => (
                   <Link
                     key={c.to}
                     to={c.to}
                     onClick={closeSearch}
-                    className="px-5 py-3 text-[12px] tracking-[0.16em] uppercase border border-foreground-950/15 rounded-full transition-colors duration-200 hover:border-primary-500 hover:text-primary-600"
+                    className="px-4 py-2.5 text-[11px] tracking-[0.16em] uppercase border border-foreground-950/15 rounded-full transition-colors duration-200 hover:border-primary-500 hover:text-primary-600"
                   >
                     {c.label}
                   </Link>
                 ))}
               </div>
-              <p className="eyebrow mt-12 mb-6">Todas as peças</p>
+              <p className="eyebrow mt-10 mb-5">Todas as peças</p>
             </>
           )}
 
           {q.trim() && (
-            <p className="eyebrow mb-8">
+            <p className="eyebrow mb-7">
               {results.length > 0 ? `Resultados (${results.length})` : "Resultados"}
             </p>
           )}
 
           {q.trim() && results.length === 0 && (
-            <div className="py-20 text-center">
+            <div className="py-16 text-center">
               <p className="text-foreground-600 text-[15px]">
-                Nada encontrado para “{q}”. Tente outro nome, cor ou categoria.
+                Nada encontrado para “{q}”. Tente outro nome, tecido, cor ou categoria.
               </p>
-              <div className="mt-8 flex flex-wrap gap-3 justify-center">
-                {CATEGORY_LINKS.map((c) => (
+              <div className="mt-7 flex flex-wrap gap-2.5 justify-center">
+                {CATEGORY_LINKS.slice(0, 6).map((c) => (
                   <Link
                     key={c.to}
                     to={c.to}
                     onClick={closeSearch}
-                    className="px-5 py-3 text-[12px] tracking-[0.16em] uppercase border border-foreground-950/15 rounded-full transition-colors duration-200 hover:border-primary-500 hover:text-primary-600"
+                    className="px-4 py-2.5 text-[11px] tracking-[0.16em] uppercase border border-foreground-950/15 rounded-full transition-colors duration-200 hover:border-primary-500 hover:text-primary-600"
                   >
                     {c.label}
                   </Link>
@@ -120,7 +124,7 @@ export default function SearchOverlay() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-5 gap-y-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-8">
             {(q.trim() ? results : products).map((p) => (
               <Link
                 to={`/produto/${p.slug}`}
@@ -128,18 +132,18 @@ export default function SearchOverlay() {
                 key={p.id}
                 className="block cursor-pointer group"
               >
-                <div className="w-full aspect-square bg-secondary-100 overflow-hidden">
+                <div className="w-full aspect-[4/5] bg-secondary-100 overflow-hidden">
                   <img
                     src={p.main}
                     alt={p.name}
                     className="w-full h-full object-cover object-top transition-opacity duration-300 group-hover:opacity-90"
                   />
                 </div>
-                <p className="mt-3 text-[14px] text-foreground-950 transition-colors group-hover:text-primary-600">
+                <p className="mt-3 text-[13px] md:text-[14px] text-foreground-950 transition-colors group-hover:text-primary-600">
                   {p.name}
                 </p>
-                <p className="mt-1 text-[12px] text-foreground-500">
-                  {p.price === null ? "Sob consulta" : money(p.price)}
+                <p className="mt-1 text-[11px] text-foreground-500">
+                  {p.categoryLabel} · {p.price === null ? "Sob consulta" : money(p.price)}
                 </p>
               </Link>
             ))}

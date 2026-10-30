@@ -8,8 +8,8 @@ export default function About() {
   return (
     <Layout overlay>
       <Seo
-        title="A marca — TRAMA"
-        description="TRAMA é uma marca independente de roupas com foco em camisas e polos. Apresentação, princípios e espaço editável para a história real da marca."
+        title="A marca — TRAMA | Chambre Quatre"
+        description="A TRAMA é uma marca independente de roupas. A Chambre Quatre é a sua linha de moda masculina, com peças de verão e inverno em tons sóbrios."
       />
 
       {/* Hero */}
@@ -90,14 +90,14 @@ export default function About() {
         <div className="shell py-14 md:py-20 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <Reveal>
             <p className="eyebrow !text-background-50/70 mb-3">A coleção</p>
-            <h2 className="font-display text-3xl md:text-4xl">Camisas e polos disponíveis agora.</h2>
+            <h2 className="font-display text-3xl md:text-4xl">A linha Chambre Quatre está na loja.</h2>
           </Reveal>
           <Reveal delay={120} className="flex flex-col sm:flex-row gap-3">
-            <Link to="/camisas" className="btn w-full sm:w-auto bg-background-50 text-foreground-950 hover:bg-background-100">
-              Ver camisas
+            <Link to="/colecao/camisas-de-linho" className="btn w-full sm:w-auto bg-background-50 text-foreground-950 hover:bg-background-100">
+              Ver camisas de linho
             </Link>
-            <Link to="/polos" className="btn btn-ghost-light w-full sm:w-auto">
-              Ver polos
+            <Link to="/colecao/mais-vendidos" className="btn btn-ghost-light w-full sm:w-auto">
+              Ver mais vendidos
             </Link>
           </Reveal>
         </div>

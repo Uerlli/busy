@@ -64,8 +64,7 @@ export default function Footer() {
               </h3>
               <p className="mt-4 text-[14px] text-background-50/75 max-w-md leading-relaxed">
                 Deixe seu e-mail para receber lançamentos e notas da coleção.
-              </p>
-            </div>
+              </p>            </div>
             <div className="md:col-span-6">
               {status === "success" ? (
                 <p className="text-[15px] text-background-50" style={{ minHeight: 48 }}>
@@ -114,8 +113,9 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 gap-y-10 md:gap-10">
           <div className="col-span-2 md:col-span-5">
             <p className="font-display text-2xl tracking-[0.28em]">{BRAND.name}</p>
+            <p className="mt-2 text-[10px] tracking-[0.24em] uppercase text-foreground-500">{BRAND.line}</p>
             <p className="mt-5 text-[14px] text-foreground-600 max-w-xs leading-relaxed">
-              Marca independente de roupas com foco em camisas e polos. Primeira coleção disponível no site.
+              Moda masculina em tons sóbrios: malhas, linho, alfaiataria, sapatos e acessórios.
             </p>
           </div>
 
@@ -153,7 +153,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-6 border-t border-foreground-950/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-foreground-500">
           <p className="text-center sm:text-left">
-            © 2026 {BRAND.name}. Conteúdo e nome provisórios.
+            © 2026 {BRAND.name} — {BRAND.line}. Conteúdo e nome provisórios.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             <Link to="/privacidade" className="transition-colors hover:text-foreground-800">Privacidade</Link>

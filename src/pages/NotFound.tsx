@@ -19,7 +19,7 @@ export default function NotFound() {
         </p>
         <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/" className="btn btn-primary w-full sm:w-auto">Voltar ao início</Link>
-          <Link to="/camisas" className="btn btn-outline w-full sm:w-auto">Ver a coleção</Link>
+          <Link to="/colecao/malhas" className="btn btn-outline w-full sm:w-auto">Ver a coleção</Link>
         </div>
       </section>
     </Layout>

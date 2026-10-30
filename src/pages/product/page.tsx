@@ -5,7 +5,32 @@ import ProductCard from "@/components/base/ProductCard";
 import Breadcrumb from "@/components/feature/Breadcrumb";
 import Seo from "@/components/feature/Seo";
 import { products } from "@/mocks/products";
+import { BRAND } from "@/mocks/brand";
 import { useUI } from "@/context/UIContext";
+
+/** Imagem de detalhe (close de tecido/acabamento) por categoria. */
+const DETAIL_BY_CATEGORY: Record<string, string> = {
+  malhas:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20a%20cable%20knit%20sweater%20texture%20in%20cream%20wool%2C%20quiet%20luxury%20textile%20photography%2C%20soft%20directional%20daylight%2C%20shallow%20depth%20of%20field&width=1200&height=1200&seq=trama-detail-malhas&orientation=squarish",
+  polos:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20a%20knitted%20polo%20collar%20and%20placket%20in%20warm%20neutral%20tones%2C%20quiet%20luxury%20textile%20photography%2C%20soft%20directional%20daylight%2C%20shallow%20depth%20of%20field&width=1200&height=1200&seq=trama-detail-polos&orientation=squarish",
+  "camisas-de-linho":
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20natural%20linen%20weave%20with%20an%20open%20shirt%20collar%20and%20button%2C%20warm%20neutral%20tones%2C%20quiet%20luxury%20textile%20photography%2C%20soft%20daylight&width=1200&height=1200&seq=trama-detail-linho&orientation=squarish",
+  calcas:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20tailored%20trouser%20pleats%20and%20a%20fabric%20waistband%20in%20navy%2C%20quiet%20luxury%20menswear%20detail%20photography%2C%20soft%20directional%20daylight&width=1200&height=1200&seq=trama-detail-calcas&orientation=squarish",
+  bermudas:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20a%20linen%20short%20hem%20and%20side%20pocket%20stitching%20in%20sand%20tone%2C%20quiet%20luxury%20menswear%20textile%20detail%2C%20soft%20daylight&width=1200&height=1200&seq=trama-detail-bermudas&orientation=squarish",
+  conjuntos:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20matching%20linen%20fabric%20folds%20on%20a%20shirt%20and%20trouser%20set%20in%20warm%20sand%20tone%2C%20quiet%20luxury%20menswear%20textile%20photography%2C%20soft%20daylight&width=1200&height=1200&seq=trama-detail-conjuntos&orientation=squarish",
+  casacos:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20a%20wool%20coat%20lapel%20and%20buttonhole%20in%20grey%2C%20quiet%20luxury%20menswear%20tailoring%20detail%2C%20soft%20directional%20daylight&width=1200&height=1200&seq=trama-detail-casacos&orientation=squarish",
+  mocassins:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20a%20brown%20leather%20loafer%20apron%20seam%20and%20stitching%2C%20quiet%20luxury%20footwear%20detail%20photography%2C%20soft%20directional%20daylight&width=1200&height=1200&seq=trama-detail-mocassins&orientation=squarish",
+  sapatos:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20brown%20leather%20derby%20lacing%20and%20welt%20stitching%2C%20quiet%20luxury%20footwear%20detail%20photography%2C%20soft%20daylight&width=1200&height=1200&seq=trama-detail-sapatos&orientation=squarish",
+  acessorios:
+    "https://readdy.ai/api/search-image?query=extreme%20close%20up%20of%20a%20leather%20belt%20buckle%20and%20edge%20stitching%20in%20brown%2C%20quiet%20luxury%20accessory%20detail%20photography%2C%20soft%20directional%20daylight&width=1200&height=1200&seq=trama-detail-acessorios&orientation=squarish",
+};
 
 export default function ProductDetail() {
   const { slug } = useParams();
@@ -28,7 +53,7 @@ export default function ProductDetail() {
           <h1 className="font-display text-3xl md:text-4xl text-foreground-950">
             Não encontramos esta peça.
           </h1>
-          <Link to="/camisas" className="btn btn-outline mt-8">
+          <Link to="/colecao/malhas" className="btn btn-outline mt-8">
             Ver a coleção
           </Link>
         </div>
@@ -38,8 +63,8 @@ export default function ProductDetail() {
 
   const gallery = [
     { src: product.main, label: "Peça" },
-    { src: product.worn, label: "Vestida" },
-    { src: product.detail, label: "Detalhe" },
+    { src: product.alt, label: "Em uso" },
+    { src: DETAIL_BY_CATEGORY[product.category], label: "Detalhe" },
   ];
 
   const related = (() => {
@@ -51,7 +76,7 @@ export default function ProductDetail() {
   const priceLabel =
     product.price === null
       ? "Sob consulta"
-      : `${product.currency} ${(product.price * qty).toLocaleString("pt-BR")}`;
+      : `R$ ${(product.price * qty).toLocaleString("pt-BR")}`;
 
   const toggle = (k: string) => setOpenAcc(openAcc === k ? null : k);
 
@@ -66,6 +91,7 @@ export default function ProductDetail() {
 
   const accItems = [
     { key: "descricao", title: "Descrição", body: product.description },
+    { key: "tecido", title: "Tecido e corte", body: `${product.fabric}. ${product.fit}.` },
     { key: "composicao", title: "Composição", body: product.composition },
     { key: "cuidados", title: "Cuidados", body: product.care },
     { key: "envio", title: "Envio e devolução", body: "As condições de envio e devolução ainda serão definidas e publicadas antes da abertura das vendas. Esta informação é provisória." },
@@ -73,12 +99,13 @@ export default function ProductDetail() {
 
   return (
     <Layout>
-      <Seo title={`${product.name} — TRAMA`} description={product.shortDescription} />
+      <Seo title={`${product.name} — ${BRAND.name} | ${BRAND.line}`} description={product.shortDescription} />
 
-      <section className="shell pt-6 md:pt-8 pb-20 md:pb-28">
+      <section className="shell pt-6 md:pt-8 pb-16 md:pb-24">
         <Breadcrumb
           items={[
-            { label: product.categoryLabel + "s", to: `/${product.category}` },
+            { label: "Loja", to: "/colecao/malhas" },
+            { label: product.categoryLabel, to: `/colecao/${product.category}` },
             { label: product.name },
           ]}
         />
@@ -100,17 +127,21 @@ export default function ProductDetail() {
                         : "border-transparent opacity-65 hover:opacity-100"
                     }`}
                   >
-                    <img src={g.src} alt={g.label} className="w-full h-full object-cover object-top bg-secondary-100" />
+                    <img
+                      src={g.src}
+                      alt={g.label}
+                      className="w-full h-full object-cover object-top bg-secondary-100"
+                    />
                   </button>
                 ))}
               </div>
               <div className="flex-1">
-                <div className="w-full aspect-square overflow-hidden bg-secondary-100 rounded-sm">
+                <div className="w-full aspect-[4/5] overflow-hidden bg-secondary-100 rounded-sm">
                   <img
                     key={activeImg}
                     src={gallery[activeImg].src}
                     alt={`${product.name} — ${gallery[activeImg].label}`}
-                    title={`${product.name} — ${product.categoryLabel}`}
+                    title={`${product.name} — ${product.type}`}
                     className="w-full h-full object-cover object-top"
                     style={{ animation: "img-soft-in 380ms var(--ease-brand) both" }}
                   />
@@ -122,17 +153,31 @@ export default function ProductDetail() {
           {/* Informações */}
           <div className="md:col-span-5">
             <div className="md:sticky md:top-[132px]">
-              <p className="eyebrow mb-3">{product.categoryLabel}</p>
+              <p className="eyebrow mb-3">
+                {product.categoryLabel} · {BRAND.line}
+              </p>
               <h1 className="font-display text-3xl md:text-4xl text-foreground-950 leading-tight">
                 {product.name}
               </h1>
               <p className="mt-3 text-[18px] text-foreground-950">{priceLabel}</p>
+              <p className="mt-2 text-[12px] text-foreground-400">
+                Preço de demonstração — editável no catálogo.
+              </p>
               <p className="mt-5 text-foreground-600 text-[14px] leading-[1.8]">
                 {product.shortDescription}
               </p>
 
+              <dl className="mt-6 grid grid-cols-2 gap-y-2.5 text-[12px] border-y border-background-200 py-4">
+                <dt className="text-foreground-500">Tipo</dt>
+                <dd className="text-foreground-800">{product.type}</dd>
+                <dt className="text-foreground-500">Corte</dt>
+                <dd className="text-foreground-800">{product.fit}</dd>
+                <dt className="text-foreground-500">Tecido</dt>
+                <dd className="text-foreground-800">{product.fabric}</dd>
+              </dl>
+
               {/* Cor */}
-              <div className="mt-8">
+              <div className="mt-6">
                 <p className="eyebrow mb-3">
                   Cor — <span className="!tracking-normal !text-foreground-800">{color}</span>
                 </p>
@@ -150,10 +195,7 @@ export default function ProductDetail() {
                           active ? "border-primary-500 border-2" : "border-foreground-950/20"
                         }`}
                       >
-                        <span
-                          className="w-6 h-6 rounded-full block"
-                          style={{ backgroundColor: c.hex }}
-                        />
+                        <span className="w-6 h-6 rounded-full block" style={{ backgroundColor: c.hex }} />
                       </button>
                     );
                   })}
@@ -226,18 +268,24 @@ export default function ProductDetail() {
               <button
                 onClick={onAdd}
                 disabled={!product.inStock}
-                className={`btn w-full mt-8 ${product.inStock ? "btn-primary" : "btn-outline !cursor-not-allowed opacity-60"}`}
+                className={`btn w-full mt-7 ${
+                  product.inStock ? "btn-primary" : "btn-outline !cursor-not-allowed opacity-60"
+                }`}
               >
                 {product.inStock ? "Adicionar à sacola" : "Esgotado"}
               </button>
 
               <p className="mt-4 text-[12px] text-foreground-500 flex items-center gap-2">
-                <i className={product.inStock ? "ri-checkbox-circle-line text-primary-600" : "ri-close-circle-line"}></i>
-                {product.inStock ? "Disponível" : "Sem estoque no momento"}
+                <i
+                  className={
+                    product.inStock ? "ri-checkbox-circle-line text-primary-600" : "ri-close-circle-line"
+                  }
+                ></i>
+                {product.inStock ? "Disponível — estoque de demonstração" : "Sem estoque no momento"}
               </p>
 
               {/* Blocos recolhíveis */}
-              <div className="mt-8 border-t border-background-200">
+              <div className="mt-7 border-t border-background-200">
                 {accItems.map((a) => (
                   <div key={a.key} className="border-b border-background-200">
                     <button
@@ -263,49 +311,48 @@ export default function ProductDetail() {
         </div>
       </section>
 
-      {/* Editorial da peça */}
-      <section className="bg-secondary-100">
-        <div className="shell py-16 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center">
-          <div className="w-full aspect-[4/5] overflow-hidden bg-background-200">
+      {/* Como usar */}
+      <section className="bg-background-100 border-y border-background-200">
+        <div className="shell py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center">
+          <div className="w-full aspect-[4/5] max-h-[520px] overflow-hidden bg-secondary-100">
             <img
-              src={product.worn}
-              alt={`${product.name} vestida`}
-              title={`${product.name} — vestida`}
+              src={product.alt}
+              alt={`${product.name} em uso`}
+              title={`${product.name} — em uso`}
               className="w-full h-full object-cover object-top"
             />
           </div>
           <div>
-            <p className="eyebrow mb-4">Vestida</p>
+            <p className="eyebrow mb-4">Como usar</p>
             <h2 className="font-display text-3xl md:text-4xl text-foreground-950 leading-tight">
-              Como a peça cai no corpo.
+              Uma peça, algumas combinações.
             </h2>
             <p className="mt-5 text-foreground-600 text-[15px] leading-[1.9] max-w-lg">
-              A modelagem foi pensada para funcionar sozinha. O corte reto mantém a linha do ombro e a
-              manga não marca o braço. Use aberta sobre uma peça lisa ou fechada até o último botão.
+              {product.description}
             </p>
+            <Link to="/looks" className="btn btn-outline mt-7">
+              Ver combinações de looks
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Relacionados */}
-      <section className="shell py-16 md:py-24">
-        <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
-          <h2 className="font-display text-3xl md:text-4xl text-foreground-950">Combine com</h2>
-          <Link
-            to={`/${product.category}`}
-            className="text-[12px] tracking-[0.18em] uppercase border-b border-foreground-950 pb-1 transition-colors hover:text-primary-600 hover:border-primary-600"
-          >
+      <section className="shell py-14 md:py-24">
+        <div className="flex flex-wrap items-end justify-between gap-4 mb-8 md:mb-10">
+          <h2 className="font-display text-2xl md:text-4xl text-foreground-950">Combine com</h2>
+          <Link to={`/colecao/${product.category}`} className="link-underline text-[11px] tracking-[0.18em] uppercase">
             Ver toda a categoria
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-10" data-product-shop>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-9" data-product-shop>
           {related.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
       </section>
 
-      {/* Guia de medidas — modal */}
+      {/* Guia de medidas */}
       {guideOpen && (
         <div
           className="fixed inset-0 z-[90] flex items-center justify-center p-4"
@@ -313,7 +360,7 @@ export default function ProductDetail() {
           aria-modal="true"
           aria-label="Guia de medidas"
         >
-          <div className="absolute inset-0 bg-foreground-950/50" onClick={() => setGuideOpen(false)} />
+          <div className="absolute inset-0 bg-foreground-950/55" onClick={() => setGuideOpen(false)} />
           <div className="relative bg-background-50 w-full max-w-lg rounded-sm p-6 md:p-8 max-h-[85vh] overflow-y-auto">
             <div className="flex items-start justify-between gap-4">
               <div>

@@ -26,8 +26,8 @@ export default function Cart() {
           <div className="mt-12 py-20 text-center border border-dashed border-foreground-950/15 rounded-sm">
             <p className="text-foreground-600 text-[15px]">Sua sacola está vazia.</p>
             <div className="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/camisas" className="btn btn-primary w-full sm:w-auto">Ver camisas</Link>
-              <Link to="/polos" className="btn btn-outline w-full sm:w-auto">Ver polos</Link>
+              <Link to="/colecao/mais-vendidos" className="btn btn-primary w-full sm:w-auto">Ver mais vendidos</Link>
+              <Link to="/colecao/linho" className="btn btn-outline w-full sm:w-auto">Ver linho</Link>
             </div>
           </div>
         ) : (
@@ -128,7 +128,7 @@ export default function Cart() {
                 )}
 
                 <Link
-                  to="/camisas"
+                  to="/colecao/malhas"
                   className="block text-center mt-4 text-[12px] tracking-[0.16em] uppercase text-foreground-600 hover:text-foreground-950 transition-colors"
                 >
                   Continuar escolhendo
